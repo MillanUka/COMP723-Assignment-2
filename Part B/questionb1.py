@@ -16,7 +16,7 @@ y_train = train["Class variable (0 or 1)"]
 X_test = test.drop("Class variable (0 or 1)", axis=1)
 y_test = test["Class variable (0 or 1)"]
 
-# from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier
 # for i in range(2, 20, 2):
 #     classifier = DecisionTreeClassifier(max_depth=i)
 #     classifier.fit(X_train, y_train)
@@ -24,12 +24,36 @@ y_test = test["Class variable (0 or 1)"]
 #     print(str(i) + " " + str(accuracy_score(y_test, y_pred)))
 
 from sklearn.neural_network import MLPClassifier
-x = np.arange(0.001, 0.01, 0.001)
-print(x)
-for i in x:
-    classifier = MLPClassifier(learning_rate_init=i)
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_test)
-    print(str(i) + " " + str(accuracy_score(y_test, y_pred)))
+# x = np.arange(0.001, 0.01, 0.001)
+# for i in x:
+#     classifier = MLPClassifier(learning_rate_init=i)
+#     classifier.fit(X_train, y_train)
+#     y_pred = classifier.predict(X_test)
+#     print(str(i) + " " + str(accuracy_score(y_test, y_pred)))
+
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+# for k in range(2, 7, 1):
+#     fs = SelectKBest(chi2, k=k)
+#     fs.fit(X_train, y_train)
+#     X_train_fs = fs.transform(X_train)
+#     X_test_fs = fs.transform(X_test)
+#     classifier = DecisionTreeClassifier(max_depth=2)
+#     classifier.fit(X_train_fs, y_train)
+#     y_pred = classifier.predict(X_test_fs)
+#     print(str(k) + " " + str(accuracy_score(y_test, y_pred)))
+
+# for k in range(2, 7, 1):
+#     fs = SelectKBest(chi2, k=k)
+#     fs.fit(X_train, y_train)
+#     X_train_fs = fs.transform(X_train)
+#     X_test_fs = fs.transform(X_test)
+#     classifier = MLPClassifier(learning_rate_init=0.004)
+#     classifier.fit(X_train_fs, y_train)
+#     y_pred = classifier.predict(X_test_fs)
+#     print(str(k) + " " + str(accuracy_score(y_test, y_pred)))    
+
+classifier = DecisionTreeClassifier(max_depth=2)
 
 
+classifier = MLPClassifier(learning_rate_init=0.004)
