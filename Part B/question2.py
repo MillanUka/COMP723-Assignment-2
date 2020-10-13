@@ -18,12 +18,17 @@ from sklearn.model_selection import train_test_split
 # y_test = test["Class variable (0 or 1)"]
 
 
-
 from sklearn.neural_network import MLPClassifier
 # classifier = MLPClassifier(hidden_layer_sizes=(20), max_iter=150)
 # classifier.fit(X_train, y_train)
 # y_pred = classifier.predict(X_test)
 # print(str(accuracy_score(y_test, y_pred)))
+
+for i in range(1, 20, 1):
+    classifier = MLPClassifier(hidden_layer_sizes=(20-i, i), max_iter=150)
+    classifier.fit(X_train, y_train)
+    y_pred = classifier.predict(X_test)
+    print("(" + str(20-i)  + ", " + str(i) + ") " + str(accuracy_score(y_test, y_pred)))
 
 data = pd.read_csv('car.data.csv',delimiter=',')   
 
@@ -42,3 +47,8 @@ for i in range(1, 20, 1):
     classifier.fit(X_train, y_train)
     y_pred = classifier.predict(X_test)
     print("(" + str(20-i)  + ", " + str(i) + ") " + str(accuracy_score(y_test, y_pred)))
+
+classifier = MLPClassifier(hidden_layer_sizes=(20), max_iter=150)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+print(str(accuracy_score(y_test, y_pred)))
