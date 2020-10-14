@@ -11,9 +11,9 @@ train = pd.DataFrame(min_max_scaler.fit_transform(train), columns=train.columns)
 test = pd.DataFrame(min_max_scaler.fit_transform(test), columns=test.columns)
 
 #The class variable is 
-X_train = train.drop("Class variable (0 or 1)", axis=1)
+X_train = train.drop(["Class variable (0 or 1)", "Unnamed: 0"], axis=1)
 y_train = train["Class variable (0 or 1)"]
-X_test = test.drop("Class variable (0 or 1)", axis=1)
+X_test = test.drop(["Class variable (0 or 1)", "Unnamed: 0"], axis=1)
 y_test = test["Class variable (0 or 1)"]
 
 from sklearn.tree import DecisionTreeClassifier
@@ -54,6 +54,24 @@ from sklearn.feature_selection import chi2
 #     print(str(k) + " " + str(accuracy_score(y_test, y_pred)))    
 
 classifier = DecisionTreeClassifier(max_depth=2)
+fs = SelectKBest(chi2, k=4)
+fs.fit(X_train, y_train)
+X_train_fs = fs.transform(X_train)
+X_test_fs = fs.transform(X_test)
+classifier.fit(X_train_fs, y_train)
+
+prob = classifier.predict_proba(X_test_fs)
+
 
 
 classifier = MLPClassifier(learning_rate_init=0.004)
+fs = SelectKBest(chi2, k=6)
+fs.fit(X_train, y_train)
+X_train_fs = fs.transform(X_train)
+X_test_fs = fs.transform(X_test)
+classifier.fit(X_train_fs, y_train)
+
+prob = classifier.predict_proba(X_test_fs)
+print(prob)
+print(prob[0])
+print(classifier.classes_)
