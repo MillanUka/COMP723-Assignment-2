@@ -53,17 +53,18 @@ from sklearn.feature_selection import chi2
 #     y_pred = classifier.predict(X_test_fs)
 #     print(str(k) + " " + str(accuracy_score(y_test, y_pred)))    
 
+
+# initiate the Decision tree classifer using the best parameters determined in previous steps
 classifier = DecisionTreeClassifier(max_depth=2)
 fs = SelectKBest(chi2, k=4)
 fs.fit(X_train, y_train)
 X_train_fs = fs.transform(X_train)
 X_test_fs = fs.transform(X_test)
 classifier.fit(X_train_fs, y_train)
+# calculate the probabilties for the decision tree classifier
+dt_prob = classifier.predict_proba(X_test_fs)
 
-prob = classifier.predict_proba(X_test_fs)
-
-
-
+# Do the same for the MLP classifier
 classifier = MLPClassifier(learning_rate_init=0.004)
 fs = SelectKBest(chi2, k=6)
 fs.fit(X_train, y_train)
@@ -71,7 +72,20 @@ X_train_fs = fs.transform(X_train)
 X_test_fs = fs.transform(X_test)
 classifier.fit(X_train_fs, y_train)
 
-prob = classifier.predict_proba(X_test_fs)
-print(prob)
-print(prob[0])
-print(classifier.classes_)
+# calculate the probabilties for the decision tree classifier
+mlp_prob = classifier.predict_proba(X_test_fs)
+
+# Average the probablities for both classifiers
+probas = (dt_prob + mlp_prob) / 2
+
+y_pred = []
+# Go through every probability and determine the higher probability of the class
+for i in range(len(probas)):
+    # if probability is aboive 0.5 then diabetes is not present
+    if probas[i][0] > 0.5:
+        y_pred.append(0)
+    # diabetes is present
+    else:
+        y_pred.append(1)
+
+print(accuracy_score(y_pred, y_test))
